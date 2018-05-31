@@ -5,6 +5,12 @@ export function fetchAllPokemon(){
   });
 }
 
+export function fetchPokemonInformation(pokemon_id){
+  return $.ajax({
+    method: "GET",
+    url: `api/pokemon/${pokemon_id}`
+  });
+}
 // export function receiveAllPokemon(pokemon){
 //
 // }
