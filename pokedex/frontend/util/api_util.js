@@ -11,6 +11,14 @@ export function fetchPokemonInformation(pokemon_id){
     url: `api/pokemon/${pokemon_id}`
   });
 }
+
+export function createPokemon(poke){
+  return $.ajax({
+    method: "POST",
+    url: `api/pokemon`,
+    data: poke
+  });
+}
 // export function receiveAllPokemon(pokemon){
 //
 // }

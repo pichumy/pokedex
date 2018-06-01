@@ -1,4 +1,6 @@
 import React from 'react';
+import ItemDetailContainer from './item_detail_container';
+import { Link, Route } from 'react-router-dom';
 
 const styles = {
   poke:{
@@ -51,32 +53,28 @@ class PokemonDetail extends React.Component {
      this.props.requestPokemonInformation(this.props.match.params.pokemon_id);
   }
   // i should be passed in a pokemon
-
+  componentWillReceiveProps(newProps){
+    if(this.props.match.params.pokemon_id !== newProps.match.params.pokemon_id){
+      this.props.requestPokemonInformation(newProps.match.params.pokemon_id);
+    }
+  }
   handleClick (index) {
     this.setState({
       itemInformationIndex: index
     });
   }
 
-
   render(){
-    if (this.props.pokemon){
-      console.log(this.props);
-      const {pokemon, items} = this.props;
+    const { pokemon, items } = this.props;
+    if (pokemon && (Object.keys(pokemon).length !== 0) && items && (Object.keys(items).length !== 0)){
 
       const images = items.map((item, idx) => {
+        const linkId = `/pokemon/${pokemon.id}/items/${item.id}`;
         return (
-          <img onClick = {() => this.handleClick(idx)} style = {styles.img} key={idx} src={item.image_url} />
-        );
-      });
+          <Link to= {linkId}>
+            <img style = {styles.img} key={idx} src={item.image_url} />
+          </Link>
 
-      const itemInformation = items.map((item,idx) => {
-        return (
-          <div style={styles.li} key={idx}>
-            <li>Name: {item.name}</li>
-            <li>Price: {item.price}</li>
-            <li>Happiness: {item.happiness}</li>
-          </div>
         );
       });
 
@@ -88,8 +86,9 @@ class PokemonDetail extends React.Component {
             <li>Attack: {pokemon.attack}</li>
             <li>Defence: {pokemon.defense}</li>
             <li>Type: {pokemon.poke_type}</li>
-            Moves:
-            { pokemon.moves.map( (move, idx) => <li key={idx}>{move}</li>)}
+            <li>
+              Moves: {pokemon.moves.join(',')}
+            </li>
           </div>
 
           <div style = {styles.main_div}>
@@ -98,7 +97,7 @@ class PokemonDetail extends React.Component {
             {images}
           </div>
           <div style = {styles.text}>
-            {itemInformation[this.state.itemInformationIndex] ? itemInformation[this.state.itemInformationIndex] : []}
+            <Route path="/pokemon/:pokemonId/items/:itemId" component={ItemDetailContainer} />
           </div>
         </div>
         </ul>

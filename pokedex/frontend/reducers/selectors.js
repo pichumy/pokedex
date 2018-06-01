@@ -19,3 +19,10 @@ export function selectItems(state, pokemon_id){
   });
   return returnArray;
 }
+
+export function selectItem(state, pokemon_id, item_id){
+  if (state.items && Object.keys(state.items).length !== 0)
+    return state.items[pokemon_id][item_id];
+  else
+    return {};
+}
